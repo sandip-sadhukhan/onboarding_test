@@ -41,3 +41,24 @@ class UserActivityLog(models.Model):
 
     def __str__(self):
         return f"{self.user_activity.user.username} - {self.user_activity.activity.name} - {self.score}"
+
+
+class Reward(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.TextField()
+    score_to_unlock = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
+class UserReward(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reward = models.ForeignKey(Reward, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.username} claim {self.reward.name} reward."
